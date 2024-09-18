@@ -310,8 +310,8 @@ TEST(TBitField, bitfields_with_different_bits_are_not_equal)
   EXPECT_NE(bf1, bf2);
 }
 
-// Мой тест
-// Заметил, что отсутствует стандартная проверка на присваивание себя самому себе
+// Задание по своему тесту
+// Отсутствует проверка на присваивание элемента самому себе
 
 TEST(TBitField, self_assignment_error_test) 
 {
