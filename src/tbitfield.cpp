@@ -138,9 +138,21 @@ TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 {
     // Если мы хотим, чтобы операция "или" работала корректно, нам нужно подогнать размер полей
     int RightLen = std::max(BitLen, bf.BitLen);
+    int MinMemLen = std::min(MemLen, bf.MemLen);
+
     TBitField res(RightLen); 
-    for (int i = 0; i < res.MemLen; i++) {
+    for (int i = 0; i < MinMemLen; i++) {
         res.pMem[i] = pMem[i] | bf.pMem[i]; 
+    }
+    if (BitLen > bf.BitLen) {
+        for (int i = MinMemLen; i < res.MemLen; i++) {
+            res.pMem[i] = pMem[i];
+        }
+    }
+    else {
+        for (int i = MinMemLen; i < res.MemLen; i++) {
+            res.pMem[i] = bf.pMem[i];
+        }
     }
     return res;
 }
@@ -148,9 +160,14 @@ TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 TBitField TBitField::operator&(const TBitField &bf) // операция "и"
 {
     int RightLen = std::max(BitLen, bf.BitLen);
+    int MinMemLen = std::min(MemLen, bf.MemLen);
+
     TBitField res(RightLen);
-    for (int i = 0; i < res.MemLen; i++) {
+    for (int i = 0; i < MinMemLen; i++) {
         res.pMem[i] = pMem[i] & bf.pMem[i]; 
+    }
+    for (int i = MinMemLen; i < res.MemLen; i++) {
+        res.pMem[i] = 0;
     }
     return res;
 }
