@@ -179,10 +179,12 @@ TBitField TBitField::operator~(void) // отрицание
         res.pMem[i] = ~pMem[i];
     }
     
-    // Лишние биты, появляющиеся, (sizeof(TELEM) * 8) превышает колво битов нужно фиксить
-    if (BitLen % (sizeof(TELEM) * 8) != 0) {
-        TELEM Mask = (1 << (BitLen % (sizeof(TELEM) * 8))) - 1;
-        res.pMem[MemLen - 1] &= Mask;
+    // В предыдущей версии некоректно учитывал лишние биты
+    int amountOfRightBits = BitLen % (sizeof(TELEM) * 8);
+    if (amountOfRightBits != 0) {
+        // Как оказалось, 1 для инта и для лонг лонга - разные вещи, так что надо это учитывать 
+        TELEM Mask = (static_cast<TELEM>(1) << amountOfRightBits) - 1;  
+        res.pMem[MemLen - 1] &= Mask;       
     }
 
     return res;
